@@ -14,11 +14,13 @@ import * as billControllerValidator from '@/controllers/validators/bill.controll
 
 //bill controller
 import BillController from '@/controllers/bill.controller';
+import AuthMiddleware from '@/middlewares/Auth.middleware';
 
 class ExternalRoute {
   public path = '/api/v1/platform';
   public router = Router();
   private validatorMiddleware = new ValidatorMiddleware();
+  private authmiddleware =new AuthMiddleware();
   private authController = new AuthController();
   private billController = new BillController();
 
@@ -49,13 +51,14 @@ class ExternalRoute {
   private initailzeBillRoutesForCreateBill(prefix: string) {
     this.router.post(
       `${prefix}/createbills`,
+     this.authmiddleware.authmiddleware2,
       this.validatorMiddleware.validateRequestBody(billControllerValidator.createBillOfUserBodyParser),
       this.billController.createBillOfUser,
     );
   }
   //getallbills
   private initailzeBillRoutesForGetAllBills(prefix: string) {
-    this.router.get(`${prefix}/allbills`, this.billController.getAllBillsOfUser);
+    this.router.get(`${prefix}/allbills`, this.authmiddleware.authmiddleware2, this.billController.getAllBillsOfUser);
   }
 
   //delete single bill
