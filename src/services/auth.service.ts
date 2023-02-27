@@ -23,31 +23,28 @@ export default class AuthService {
   }) => {
     // check if user already exists
     const existingUser = await this.userDao.getUserByContactOrEmail(contactNumber, email);
-
     if (existingUser) {
       throw new HandledError(`User Already Exists`);
     }
     const passwordHash = await hash(password, 7);
-
     // create user
     await this.userDao.createUser(firstName, lastName, email, contactNumber, passwordHash);
     return;
   };
+
+
+  //login user
+
   public loginUserServices = async ({ email, password }: { email: string; password: string }) => {
-    const existinguser = await this.userDao.getUserByEmail(email);
-    console.log(existinguser.password, '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+    const existinguser = await this.userDao.getUserByEmail(email);  
     if (!existinguser) {
       throw new HandledError('please signin first');
-    }
-
-    console.log(existinguser.password, 'existing usere>>>>>>>');
-    const passwordCheck = await compare(password, existinguser.password);
-    console.log(passwordCheck, 'password check >>>>>>>>>>>>>>>>>>>>>>>///////////////');
+    }   
+    const passwordCheck = await compare(password, existinguser.password);   
     if (!passwordCheck) {
       throw new HandledError('user with given credentials doest not exists');
     }
     const token: string = sign({ user: existinguser._id }, 'billtracker');
-    console.log(verify(token,'billtracker'));
     
     return { existinguser, token };
   };

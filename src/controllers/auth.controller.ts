@@ -9,6 +9,7 @@ import { CreateUserOnSignUpRequestBody, LoginUserRequestBody } from './typings/a
 export default class AuthController {
   private authService = new AuthService();
 
+  //creating a user 
   public createUserOnSignup = async (req: any, res: any, next: NextFunction) => {
     try {
       const { first_name: firstName, last_name: lastName, contact_number: contactNumber, email, password }: CreateUserOnSignUpRequestBody = req.body;
@@ -18,13 +19,14 @@ export default class AuthController {
       next(err);
     }
   };
+
+  //login 
   public loginUser = async (req: any, res: any, next: NextFunction) => {
-    console.log('inside login user');
+   
     try {
       const { email, password }: LoginUserRequestBody = req.body;
-      console.log(password, '>>>>>>>>>>>>>>>>>>>>..');
-      const { existinguser, token } = await this.authService.loginUserServices({ email, password });
-      console.log(existinguser, '>>>>>>>>>>>>>>>>>>>>..');
+     
+      const { existinguser, token } = await this.authService.loginUserServices({ email, password });    
 
       res.send({ existinguser, token });
     } catch (error) {

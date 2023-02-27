@@ -33,7 +33,7 @@ class ExternalRoute {
     this.initailzeBillRoutesForEdit(`${this.path}/bill`);
     this.initailzeBillRoutesForGettingSingleBill(`${this.path}/bill`);
   }
-
+//user signup
   private initailzeAuthRoutesForSignUp(prefix: string) {
     this.router.post(
       `${prefix}/signup`,
@@ -41,6 +41,8 @@ class ExternalRoute {
       this.authController.createUserOnSignup,
     );
   }
+
+  //user login
   private initailzeAuthRoutesForLogin(prefix: string) {
     this.router.post(
       `${prefix}/login`,
@@ -48,6 +50,8 @@ class ExternalRoute {
       this.authController.loginUser,
     );
   }
+
+  //create a new bill
   private initailzeBillRoutesForCreateBill(prefix: string) {
     this.router.post(
       `${prefix}/createbills`,
@@ -65,9 +69,13 @@ class ExternalRoute {
   private initailzeBillRoutesForDelete(prefix: string) {
     this.router.delete(`${prefix}/deletebill/:id`, this.billController.deleteBillOfUser);
   }
+
+  //edit bill
   private initailzeBillRoutesForEdit(prefix: string) {
     this.router.put(`${prefix}/editbill/:id`, this.billController.editBillOfUser);
   }
+
+  //get single bill by id
   private initailzeBillRoutesForGettingSingleBill(prefix: string) {
     this.router.get(`${prefix}/billbyid/:id`, this.billController.getBillById);
   }
