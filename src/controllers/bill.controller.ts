@@ -6,8 +6,10 @@ export default class BillController {
   private billService = new BillService();
   public createBillOfUser = async (req: any, res: any, next: NextFunction) => {
     try {
+      const user_id = req.userId;
+      console.log(user_id,'////////////////////////');
       const { title, amount, expense_date }: CreateBillOfUserRequestBody = req.body;
-      const bill = await this.billService.createBillOfUserInService({ title, amount, expense_date });
+      const bill = await this.billService.createBillOfUserInService({ title, amount, expense_date,user_id});
       console.log(bill, 'created bill');
       res.sendformat({ message: ' bill sucessfully created' });
     } catch (error) {
@@ -18,8 +20,9 @@ export default class BillController {
   public getAllBillsOfUser = async (req: any, res: any, next: NextFunction) => {
     try {
       const { page = 1, pageSize = 5, search, startDate, endDate } = req.query;
+      let userId = req.userId;
 
-      const { data, count } = await this.billService.getBillOfUserInService({ page, pageSize, search, startDate, endDate });
+      const { data, count } = await this.billService.getBillOfUserInService({ page, pageSize, search, startDate, endDate ,userId});
 
       res.send({ allbills: data, count: count });
     } catch (error) {

@@ -4,7 +4,7 @@ import bcrypt, { compare, hash } from 'bcrypt';
 // Dao
 import UserDao from '@/dao/user.dao';
 import { HandledError } from '@/exceptions/HandledError';
-import { sign } from 'jsonwebtoken';
+import { sign,verify } from 'jsonwebtoken';
 
 export default class AuthService {
   private userDao = new UserDao();
@@ -46,7 +46,9 @@ export default class AuthService {
     if (!passwordCheck) {
       throw new HandledError('user with given credentials doest not exists');
     }
-    const token: string = sign({ user: existinguser._id }, 'biiltracker');
+    const token: string = sign({ user: existinguser._id }, 'billtracker');
+    console.log(verify(token,'billtracker'));
+    
     return { existinguser, token };
   };
 }

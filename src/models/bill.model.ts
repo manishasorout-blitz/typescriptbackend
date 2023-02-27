@@ -5,6 +5,7 @@ const BillModelSchema: Schema = new Schema({
   amount: { type: Number, required: true },
   expense_date: Date,
   is_Active: { type: Boolean, default: true },
+  user_id:{ type: String , required:true}
 });
 const BillModel = model<Document>('expenses', BillModelSchema);
 
